@@ -1,0 +1,6 @@
+fastmcp==4.1.0
+cryptography==50.0.2
+py-key-value-aio==0.4.6
+httpx2==2.13.1
+pydantic==2.14.1
+starlette==1.8.0
