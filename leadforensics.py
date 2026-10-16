@@ -41,7 +41,7 @@ def window(start=None, end=None):
         raise LeadForensicsError('Use an ordered date range of at most 93 calendar days.')
     return {'datefrom': f'{first} 00:00:00', 'dateto': f'{last} 23:59:59'}
 
-def positive(value, label, maximum=2147483647):
+def positive(value, label, maximum=9007199254740991):
     if type(value) is not int or not 1 <= value <= maximum:
         raise LeadForensicsError(f'{label} must be an integer from 1 to {maximum}.')
     return value

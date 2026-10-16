@@ -17,7 +17,8 @@ from starlette.responses import JSONResponse
 
 from leadforensics import LeadForensics, LeadForensicsError
 
-PositiveID = Annotated[int, Field(ge=1, le=2147483647)]
+# Visit IDs exceed int32. Keep IDs within JSON's exact integer range.
+PositiveID = Annotated[int, Field(ge=1, le=9007199254740991)]
 Page = Annotated[int, Field(ge=1, le=10000)]
 PageSize = Annotated[int, Field(ge=1, le=100)]
 READ_ONLY = {'readOnlyHint': True, 'destructiveHint': False,

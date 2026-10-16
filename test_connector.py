@@ -72,6 +72,13 @@ class ClientTests(unittest.TestCase):
                 self.client.read('https://example.com', {})
             opened.assert_not_called()
 
+    def test_large_visit_id_preserved(self):
+        with patch.object(self.client, 'read', return_value=[]) as read:
+            self.client.fetch('pages', visit_id=16462420429)
+        self.assertEqual(read.call_args.args[1]['visitid'], 16462420429)
+        with self.assertRaises(LeadForensicsError):
+            self.client.fetch('pages', visit_id=9007199254740992)
+
 class ServerTests(unittest.IsolatedAsyncioTestCase):
     async def asyncSetUp(self):
         self.tmp = tempfile.TemporaryDirectory()
@@ -122,7 +129,7 @@ class ServerTests(unittest.IsolatedAsyncioTestCase):
             ('assigned_visitors', {'client_user_id': 17}, 'Business/GetBusinessesByAssignedTo'),
             ('business_details', {'business_id': 5}, 'Business/GetBusiness'),
             ('business_visits', {'business_id': 5}, 'Visit/GetVisitsByBusiness'),
-            ('visit_pages', {'visit_id': 8}, 'Page/GetPagesByVisit'),
+            ('visit_pages', {'visit_id': 16462420429}, 'Page/GetPagesByVisit'),
         ]
         with patch('server.get_access_token', return_value=self.approved):
             async with Client(self.mcp) as client:

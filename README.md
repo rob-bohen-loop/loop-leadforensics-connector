@@ -5,9 +5,11 @@ It contains six read-only tools. It does not use Pipedrive, create tasks, send
 messages or run a morning schedule. Your Lead Forensics credentials stay on the
 host; chat receives the requested visitor data.
 
-**Status:** built and tested locally with simulated API responses. Not deployed
-or connected to your Lead Forensics account yet. Real GitHub sign-in and live
-Lead Forensics responses must be checked after deployment. Designed for remote
+**Status (16 October 2026 update):** the initial deployment connected successfully
+in ChatGPT. Live tests passed for assignees, assigned visitors, business details
+and visit history. A sample account-wide visitor request also passed. This revision fixes the visit-ID limit discovered during the
+page-detail test; deploy the updated `server.py` and `leadforensics.py`, refresh
+the connector's tools, then repeat that live test. Designed for remote
 MCP clients supporting Streamable HTTP and OAuth, including Claude and eligible
 ChatGPT custom-app/plugin configurations; your account must allow custom MCP.
 
@@ -172,12 +174,13 @@ python3 -m venv .venv
 .venv/bin/python -m unittest -v test_connector
 ```
 
-Eleven tests passed during preparation: six-tool MCP discovery and calls,
+Twelve tests passed for this revision: six-tool MCP discovery and calls,
 correct API parameters and pagination, date/ID validation, sanitised failures,
 unauthenticated HTTP rejection and OAuth discovery, approved-account checks,
 and blocking unauthorised tools before any Lead Forensics request.
-The complete browser OAuth exchange, live API permissions/response schemas and
-hosting lifecycle have not yet been tested with your accounts.
+The tests also cover the real-sized visit ID that failed in the initial live test.
+Page-detail retrieval after deployment and
+hosting restart/sign-in persistence still need live verification.
 
 Use the included dependency versions for the initial deployment. Review and test
 dependency security updates periodically. Keep real credentials out of repository
